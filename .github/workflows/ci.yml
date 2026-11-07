@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.11"
+  NODE_VERSION: "24"
+
+jobs:
+  backend-tests:
+    name: Backend tests (Python 3.11)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install backend dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r backend/requirements.txt
+
+      - name: Run pytest
+        working-directory: backend
+        run: python -m pytest -v
+
+  frontend-build-and-e2e:
+    name: Frontend build + Playwright (Node 24)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install backend dependencies (the Playwright webServer runs uvicorn)
+        run: python -m pip install --upgrade pip && python -m pip install -r backend/requirements.txt
+
+      - name: npm ci
+        working-directory: frontend
+        run: npm ci
+
+      - name: Type-check and build the SPA
+        working-directory: frontend
+        run: npm run build
+
+      - name: Install Chromium for Playwright
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright browser tests
+        working-directory: frontend
+        env:
+          CI: "true"
+          MS_ARTIFACT_ENV: ci-linux
+          MS_PYTHON: python
+        run: npx playwright test
+
+      - name: Upload screenshots, console logs and the HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-0-browser-evidence
+          path: |
+            artifacts/phase-0/ci-linux/**/*.png
+            artifacts/phase-0/ci-linux/**/*.log
+            artifacts/phase-0/ci-linux/playwright-report/**
+            artifacts/phase-0/ci-linux/playwright-results.json
+          if-no-files-found: error
+          retention-days: 30
+
+  mutation-check:
+    name: Mutation check (phase-aware)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install backend dependencies
+        run: python -m pip install --upgrade pip && python -m pip install -r backend/requirements.txt
+
+      - name: Read the current phase
+        id: phase
+        run: echo "value=$(tr -d ' \n\r' < PHASE)" >> "$GITHUB_OUTPUT"
+
+      - name: Run the mutation checker
+        run: python scripts/mutation_check.py --phase "${{ steps.phase.outputs.value }}"
+
+      - name: Upload the mutation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-${{ steps.phase.outputs.value }}-mutation-report
+          path: artifacts/phase-${{ steps.phase.outputs.value }}/MUTATION_REPORT.md
+          if-no-files-found: error
+          retention-days: 30

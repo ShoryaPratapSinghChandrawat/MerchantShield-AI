@@ -1,0 +1,44 @@
+# --- secrets -----------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# --- python ------------------------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# --- databases ---------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+
+# --- node / frontend ---------------------------------------------------
+node_modules/
+dist/
+.vite/
+playwright-report/
+test-results/
+
+# --- generated evidence, never packaged --------------------------------
+artifacts/
+
+# --- packaging ---------------------------------------------------------
+*.zip
+*.patch
+*.diff
+
+# --- editors / OS ------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
