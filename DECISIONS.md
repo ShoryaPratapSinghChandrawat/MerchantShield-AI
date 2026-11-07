@@ -501,3 +501,41 @@ orders" (MASTER section 9 says 15), and `LLM_PROVIDER` listing
 **Why.** MASTER wins over any other document, and a README that contradicts a
 measurement taken in the same session is worse than no README. No test or code
 was touched. Recorded as BUG-0010.
+
+---
+
+## D-023 - GitHub Actions ran for real, and the pinned browser passed there
+
+**What happened.** The branch and the `phase-0` tag were pushed on 2026-11-07.
+Both pushes triggered the workflow - the first time it has ever run, because it
+used to sit in a subfolder GitHub never reads. Both runs **succeeded**:
+
+| Run | Trigger | Result | Jobs |
+| --- | --- | --- | --- |
+| [42356743578](https://github.com/ShoryaPratapSinghChandrawat/MerchantShield-AI/actions/runs/42356743578) | push of tag `phase-0` | success, 46 s | backend tests 13 s; frontend build + Playwright (Node 24) 43 s; mutation check 24 s |
+| 42356743073 | push of the branch | success, 1 m 20 s | all three jobs success |
+
+Every step in the Playwright job succeeded, including
+`Install Chromium for Playwright` (`npx playwright install --with-deps
+chromium`) and `Upload screenshots, console logs and the HTML report`. That
+upload step is configured with `if-no-files-found: error`, so its success means
+screenshot and console-log files were actually produced by the run.
+
+**Why this matters for the honesty trail.** MASTER 10.3 names a CI run as the
+evidence that upgrades a `-browser-unverified` tag. This is that evidence, and
+it is stronger than the sandbox run: the runner downloaded the **pinned**
+Playwright Chromium (revision 1248 / Chrome 156), on Ubuntu with Node 24, from
+the committed `playwright.config.ts` with no local override at all.
+
+**What I could NOT see.** The raw job log and the uploaded artifacts. The
+sandbox's egress allowlist blocks both `*.blob.core.windows.net` (artifacts) and
+the logs endpoint, so the exact "N passed" line and the screenshots themselves
+were not read here. The per-step conclusions come from the GitHub API and are
+quoted above; treat "6/6 passed in CI" as *strongly implied* by a green
+Playwright step with a successful artifact upload, not as a line I read.
+
+**Still not verified.** Windows 11. `scripts/windows_check.ps1` (never executed
+or parsed anywhere). Any PayPal call. The Node 20 deprecation annotations the
+API reported for `actions/checkout@v4`, `actions/setup-python@v5`,
+`actions/setup-node@v4` and `actions/upload-artifact@v4` are warnings, not
+failures, and are worth bumping later.

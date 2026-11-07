@@ -12,8 +12,10 @@ came from. Nothing here touches real money.
 > checker that **caught 3/3** phase-0 mutations, and **6 Playwright tests that
 > passed in a real headless Chromium** (1500x900 and 390x844). The risk engine,
 > action engine, PayPal integration and AI layers are **not built yet** - see
-> the roadmap below. The browser run used a substituted Chromium build; see
-> "Verification status" for exactly what that does and does not prove.
+> the roadmap below. The sandbox browser run used a substituted Chromium build;
+> the pinned one then passed in GitHub Actions, which triggered for the first
+> time once the workflow moved to the repository root. See "Verification
+> status" for exactly what each of those does and does not prove.
 
 ---
 
@@ -453,13 +455,14 @@ without evidence:
 | Missing-virtualenv error path | **RAN HERE - PASS** |
 | Per-run database + stale-database cleanup across two runs | **RAN HERE - PASS** |
 | Release packaging: 66 files, 22 required present, secret scan clean | **RAN HERE - PASS** |
-| **Playwright browser tests (actual browser)** | **RAN HERE - PASS**, 6/6 at 1500x900 and 390x844 - but against a **substituted browser build**: Chromium 153 extracted from the `@sparticuz/chromium` npm package plus its bundled AL2023 shared libraries, because the pinned Playwright Chromium 156 cannot be downloaded here (`cdn.playwright.dev` resets the connection). This is *not* the pinned build and *not* a Windows run; see `DECISIONS.md` D-021 |
+| **Playwright browser tests (pinned Chromium, GitHub Actions)** | **RAN IN CI - PASS** on `ubuntu-latest` with Node 24 and the pinned Playwright Chromium 156: the `Install Chromium`, `Run Playwright browser tests` and evidence-upload steps all succeeded ([run 42356743578](https://github.com/ShoryaPratapSinghChandrawat/MerchantShield-AI/actions/runs/42356743578)). The raw log and artifact files could not be downloaded from the build sandbox (blob host blocked), so the *number of passing tests* was not read there - see `DECISIONS.md` D-023 |
+| **Playwright browser tests in the build sandbox** | **RAN HERE - PASS**, 6/6 at 1500x900 and 390x844 - but against a **substituted browser build**: Chromium 153 extracted from the `@sparticuz/chromium` npm package plus its bundled AL2023 shared libraries, because the pinned Playwright Chromium 156 cannot be downloaded here (`cdn.playwright.dev` resets the connection). This is *not* the pinned build and *not* a Windows run; see `DECISIONS.md` D-021 |
 | **Screenshots and browser console logs** | **RAN HERE** - `artifacts/phase-0/sandbox-linux/screenshot-{desktop-1500x900,mobile-390x844}.png` and `console-*.log`, produced by that run |
-| **The pinned Playwright Chromium (revision 1248 / Chrome 156)** | **NOT RUN** - the download host is unreachable from this sandbox |
+| **The pinned Playwright Chromium (revision 1248 / Chrome 156) in this sandbox** | **NOT RUN** - the download host is unreachable here; it did run in CI |
 | **Browser tests against the committed `playwright.config.ts` alone** | **NOT RUN** - the passing run needed a local, uncommitted config override that only sets `launchOptions.executablePath`; no test was changed, skipped or weakened |
 | **`scripts/windows_check.ps1`** | **NOT RUN** - no PowerShell in this sandbox, so it has never been executed *or even parsed*. Review it before trusting it |
-| **GitHub Actions CI** | **NOT RUN** - the workflow now sits at the repository root where GitHub reads it, but no run has been observed |
-| **Everything on Windows 11** | **NOT RUN** - this is your step |
+| **GitHub Actions CI** | **RAN - PASS** - two runs, both green, after the workflow moved to the repository root (the first time it has ever triggered) |
+| **Everything on Windows 11** | **NOT RUN** - a green CI run on Ubuntu says nothing about Windows. This is still your step |
 | **Any PayPal Sandbox API call** | **NOT RUN** - no credentials supplied, Phase 0 is mock-only |
 
 The 2026-11-07 re-run used **Node v24.22.2** (installed in the sandbox from the

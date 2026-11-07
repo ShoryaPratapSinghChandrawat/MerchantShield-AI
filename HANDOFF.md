@@ -194,6 +194,13 @@ local config that only sets `launchOptions.executablePath`. That file was
 deleted after the run. See `DECISIONS.md` D-021 for the three attempts and the
 exact reproduction steps.
 
-**Still NOT RUN:** the pinned browser build, GitHub Actions, anything on
-Windows 11, `scripts/windows_check.ps1`, any PayPal call, and the MASTER 10.4 /
-10.9 / 4.1 requirements listed in section 5 above - those are Sprint A work.
+**GitHub Actions ran, and passed.** Pushing this branch and the `phase-0` tag
+triggered `CI` twice; both runs are green, and the Playwright job downloaded the
+**pinned** Chromium 156 and ran the committed config unmodified. See
+`DECISIONS.md` D-023. The raw logs and uploaded artifacts could not be
+downloaded from this sandbox (blob host blocked), so the passing-test count was
+not read here.
+
+**Still NOT RUN:** anything on Windows 11, `scripts/windows_check.ps1` (never
+executed or parsed), any PayPal call, and the MASTER 10.4 / 10.9 / 4.1
+requirements listed in section 5 above - those are Sprint A work.
