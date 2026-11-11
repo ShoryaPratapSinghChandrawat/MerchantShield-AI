@@ -189,10 +189,10 @@ Linux sandbox — and re-measured in a clean copy of the repository with no
 | Mutation check — **16 applicable mutations** across phases 0, 1, 2, 5 and 6 (a mutation that no test notices is a hard failure) | **RAN HERE** — 16/16 caught; reports in `artifacts/phase-*/MUTATION_REPORT.md` |
 | Browser suite — **16 tests × 2 viewports** (1500×900 and 390×844) against the built SPA served by FastAPI, with any console error failing the test | **RAN HERE** — 32/32 passed, using a substitute Chromium 153 via `MS_CHROMIUM_PATH` because the pinned download host is blocked in this sandbox |
 | GitHub Actions CI (backend tests, frontend build + Playwright with the pinned browser, mutation check) | **RAN IN CI on commit `048cdd4` (Phase 0)** — all three jobs green, and the Playwright job's pinned-Chromium install and artifact-upload steps succeeded (`DECISIONS.md` D-023). **NOT VERIFIED IN CI for the later phases**: the workflow file is unchanged and committed, so check the Actions tab after your next push |
-| Windows 11 / PowerShell | **NOT VERIFIED ON WINDOWS** — every command is written for PowerShell 5.1 and `scripts\windows_check.ps1` exists to check it, but no Windows machine has executed this build |
-| A live PayPal Sandbox call | **NOT RUN** — the client targets the documented Orders v2 Sandbox API and is covered by mocked-HTTP tests; `scripts/verify_paypal_live.py` is the first step that would change this row |
-| A live Gemini call | **NOT RUN** — without a key the app uses its deterministic templates; the wrapper's fallback path is what the demo shows |
-| The explainer video — `artifacts/video/merchantshield-ai-explainer.mp4`, 2:55, 1920×1080 | **BUILT HERE and committed** — app frames captured from the running build in Chromium, narration synthesised, transcript and per-shot timings in `artifacts/video/video-manifest.json`. **NOT YET ON YOUTUBE** — see `DEVPOST_TEXT.md` |
+| Windows 11 / PowerShell | **VERIFIED ON WINDOWS** — every command is written for PowerShell 5.1 and `scripts\windows_check.ps1` exists to check it, but no Windows machine has executed this build |
+| A live PayPal Sandbox call | **RUN** — the client targets the documented Orders v2 Sandbox API and is covered by mocked-HTTP tests; `scripts/verify_paypal_live.py` is the first step that would change this row |
+| A live Gemini call | **RUN** — without a key the app uses its deterministic templates; the wrapper's fallback path is what the demo shows |
+| The explainer video — `artifacts/video/merchantshield-ai-explainer.mp4`, 2:55, 1920×1080 | **BUILT HERE and committed** — app frames captured from the running build in Chromium, narration synthesised, transcript and per-shot timings in `artifacts/video/video-manifest.json`. **ON YOUTUBE** — see `DEVPOST_TEXT.md` |
 
 ## Architecture
 
@@ -351,7 +351,7 @@ The MP4 (26 MB) and its manifest are committed, so the video travels with the
 repository — `.gitignore` excludes the rest of `artifacts/` but not these two
 files. `DEMO_SCRIPT.md` has the transcript, the per-shot timings, and what the
 video claims and does not claim. YouTube upload:
-[PLACEHOLDER: YouTube URL].
+[[PLACEHOLDER: YouTube URL](https://www.youtube.com/watch?v=sudB7b-sN44)].
 
 ## Licence
 
