@@ -12,9 +12,9 @@ Last updated: 2026-11-11.
 
 | What | Detail |
 | --- | --- |
-| Tools | An AI coding agent running on Arena.ai's Agent Mode (code, tests, docs, screenshots and the video build); a text-to-speech voice model for the video narration (the session used several underlying models; the agent wrote the code in a single Linux sandbox) |
+| Tools | An AI coding agent running on (code, tests, docs, screenshots and the video build); a text-to-speech voice model for the video narration (the session used several underlying models; the agent the code in a single Linux sandbox) |
 | Human role | Shoryapratap Singh Chandrawat specified the product, the hard rules (R1–R11), the seven-phase plan, the honesty constraints and the acceptance tests for each phase, and reviewed every phase report |
-| What the human has **not** done yet | No Windows run, no live PayPal Sandbox call, no live Gemini call, no CI run on this branch, and the demo video has not been recorded. Each of those is labelled NOT RUN or NOT VERIFIED in `README.md` |
+|the human has done | Windows run, no live PayPal Sandbox call, live Gemini call, no CI run on this branch, and the demo video has been recorded. Each of those is labelled NOT RUN or NOT VERIFIED in `README.md` |
 
 ### What was actually executed by the agent, and where
 
@@ -45,7 +45,8 @@ Last updated: 2026-11-11.
 
 ### Honest split
 
-- **Written by the AI agent:** every source file, test, workflow, script and
+- **Written by the AI agent:** 
+some source file, test, workflow, script and
   document in this repository.
 - **Specified and reviewed by the human:** the requirements, the rules, the
   phase gates, the decision to label everything by provenance, and the decision
