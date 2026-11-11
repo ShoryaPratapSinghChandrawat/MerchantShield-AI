@@ -48,7 +48,12 @@ test('reset demo reports what it deleted and keeps live rows', async ({ page, re
   };
 
   const before = await readOrders();
-  const demoBefore = before.filter((order) => order.order_ref.startsWith('MS-2')).length;
+  // Identify demo rows by their FLAG, not by their reference prefix. Seeded
+  // story orders are MS-2001..MS-2015, but storefront orders are
+  // `MS-<8 hex chars>` - so a live order can legitimately be MS-2C2D39B5 and
+  // "startsWith('MS-2')" would then count a live row as demo data (BUG-0021).
+  const isDemoStoryOrder = (order: OrderRow): boolean => order.is_demo;
+  const demoBefore = before.filter(isDemoStoryOrder).length;
   const liveBefore = before.filter((order) => order.is_demo === false).length;
 
   await page.getByTestId('walkthrough-reset').click();
@@ -60,7 +65,7 @@ test('reset demo reports what it deleted and keeps live rows', async ({ page, re
 
   // Every demo story order is gone; a storefront order is not.
   const afterReset = await readOrders();
-  expect(afterReset.filter((order) => order.order_ref.startsWith('MS-2'))).toHaveLength(0);
+  expect(afterReset.filter(isDemoStoryOrder)).toHaveLength(0);
   expect(afterReset.filter((order) => order.is_demo === false).length).toBe(liveBefore);
 
   // The reported count is the real count, not a constant.
@@ -75,7 +80,7 @@ test('reset demo reports what it deleted and keeps live rows', async ({ page, re
   expect(seeded).toBeGreaterThanOrEqual(0);
 
   const afterSeed = await readOrders();
-  expect(afterSeed.filter((order) => order.order_ref.startsWith('MS-2'))).toHaveLength(seeded);
+  expect(afterSeed.filter(isDemoStoryOrder)).toHaveLength(seeded);
 
   expect(recorder.problems, `console problems:\n${recorder.problems.join('\n')}`).toHaveLength(0);
 });

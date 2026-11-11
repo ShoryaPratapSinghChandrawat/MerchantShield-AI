@@ -720,3 +720,32 @@ threw; the approval had succeeded server-side and the card still read `DRAFT`.
 Both endpoints now return `draft_payload()`, and
 `test_approve_returns_the_same_full_draft_shape_as_create` compares the key sets
 so the shapes cannot drift again.
+
+---
+
+## D-035 - `frontend/tests/` was deleted, not merged forward
+
+**Context.** Rewriting history was not an option: the remote branch carried three
+commits (`51ed15c`, `048cdd4`, `70b785f`) that this checkout never had, because
+`.venv` and Git state are reset between sandbox sessions. The branch was therefore
+merged (`--no-ff`), and 33 files conflicted.
+
+**Resolution.** Every conflict resolved to this checkout's version (`--ours`),
+which is a strict superset except for one directory: the remote's
+`frontend/tests/` (`global-setup.ts`, `paths.ts`, `walking-skeleton.spec.ts`).
+That directory was superseded by `frontend/e2e/` when the suite grew from the
+Phase 0 walking skeleton to 16 tests across 8 spec files, and
+`playwright.config.ts` points `testDir` at `e2e`. Keeping both would have left a
+second, never-executed copy of the harness in the repository - exactly the kind of
+dead file that makes a judge doubt the tree.
+
+**What was preserved from the remote instead of by the merge:** the D-023 CI
+record (it merged cleanly into `DECISIONS.md`, because this checkout had appended
+after it), and the `README.md` row that describes it - which was then corrected
+in this commit to say the CI run is green **on `048cdd4`**, and *not yet verified*
+for the later phases.
+
+**Verification after the merge:** 215 backend tests, `tsc --noEmit`, `vite build`,
+32/32 browser runs (twice, consecutively), and 16/16 mutations caught - all in the
+clean copy, from the merged tree.
+

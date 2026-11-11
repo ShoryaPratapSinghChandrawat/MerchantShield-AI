@@ -672,6 +672,49 @@ depends on another's leftovers.
 
 ---
 
+## BUG-0021 - A storefront order could be mistaken for demo data by its reference
+
+**Phase:** 7 / 7
+**Found:** 2026-11-11, as an intermittent browser-suite failure
+(`walkthrough.spec.ts` → "reset demo reports what it deleted and keeps live rows",
+2 failures out of 32 runs, different runs each time).
+
+**Symptom.**
+
+```
+Error: expect(received).toHaveLength(expected)
+Expected length: 0
+Received length: 1
+Received array: [{"order_ref": "MS-2C2D39B5", "is_demo": false, ...}]
+```
+
+**Root cause.** Seeded story orders are `MS-2001` … `MS-2015`, and storefront
+orders are `MS-<uuid4().hex[:8].upper()>` (`services/store.py`). So a live
+storefront order's reference can begin `MS-2` — about one run in sixteen, since
+the first hex character is 2 roughly 1/16 of the time. The test decided what was
+demo data with `order_ref.startsWith('MS-2')`, which is a *naming coincidence*,
+not the property it meant. When a live order landed on `MS-2…` and was created
+before the reset, "every demo row is gone" failed against a row that was
+correctly kept.
+
+**Why it mattered beyond the flake.** The assertion was checking the wrong
+thing. The product's rule is that demo membership lives in the `is_demo` column
+and is independent of `source` (MASTER 3). A test that infers demo membership
+from a string prefix would keep passing after a change that broke exactly that
+separation.
+
+**Fix.** The spec now filters on `order.is_demo` — the flag the API actually
+exposes and the reset endpoint actually uses — for all three assertions (count
+before, gone after reset, restored after reseed). No production code changed;
+the defect was in the test, which is why it is recorded here rather than
+silently patched.
+
+**Verified.** Full suite re-run after the fix: 32/32 passed. The old predicate is
+unstable by construction, so a single green run is not proof; the fix removes the
+dependency on a generated string entirely.
+
+---
+
 ## Not yet reproduced / not yet investigated
 
 Listed so they are not quietly forgotten.
