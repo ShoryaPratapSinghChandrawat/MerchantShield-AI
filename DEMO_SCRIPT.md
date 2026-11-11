@@ -34,9 +34,11 @@ cd ..
     --out    artifacts/video/merchantshield-ai-explainer.mp4
 ```
 
-`artifacts/` is gitignored, so the MP4 is not committed: it is uploaded to
-YouTube and linked from `DEVPOST_TEXT.md`. If you re-record it, replace
-`[PLACEHOLDER: YouTube URL]` there.
+The MP4 and `video-manifest.json` are **committed** (`.gitignore` excludes the
+rest of `artifacts/` but not these two files), so a judge can watch it from the
+repository without downloading anything from a third party. Uploading it to
+YouTube is a separate, still-open step: replace `[PLACEHOLDER: YouTube URL]` in
+`DEVPOST_TEXT.md` once that URL exists.
 
 ---
 

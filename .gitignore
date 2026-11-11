@@ -30,12 +30,17 @@ playwright-report/
 test-results/
 
 # --- generated evidence, never packaged --------------------------------
-# Evidence directory: kept out of Git except the mutation reports, which are
-# small text files a reviewer can actually check.
+# Evidence directory: kept out of Git except the mutation reports (small text a
+# reviewer can check) and the explainer video, which IS a submission deliverable
+# and must travel with the repository rather than only sitting in a sandbox.
 artifacts/*
 !artifacts/*/
 artifacts/*/*
 !artifacts/*/MUTATION_REPORT.md
+!artifacts/video/
+artifacts/video/*
+!artifacts/video/merchantshield-ai-explainer.mp4
+!artifacts/video/video-manifest.json
 
 # --- packaging ---------------------------------------------------------
 *.zip

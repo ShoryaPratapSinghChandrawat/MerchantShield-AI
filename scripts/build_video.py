@@ -248,7 +248,7 @@ def build_segment(
             "-loop", "1", "-i", str(frame),
             "-t", f"{duration:.3f}",
             "-vf", f"{zoom},format=yuv420p",
-            "-r", str(FPS), "-c:v", "libx264", "-preset", "medium", "-crf", "20",
+            "-r", str(FPS), "-c:v", "libx264", "-preset", "medium", "-crf", "26", "-tune", "stillimage",
             str(out),
         ]
     )

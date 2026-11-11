@@ -192,7 +192,7 @@ Linux sandbox — and re-measured in a clean copy of the repository with no
 | Windows 11 / PowerShell | **NOT VERIFIED ON WINDOWS** — every command is written for PowerShell 5.1 and `scripts\windows_check.ps1` exists to check it, but no Windows machine has executed this build |
 | A live PayPal Sandbox call | **NOT RUN** — the client targets the documented Orders v2 Sandbox API and is covered by mocked-HTTP tests; `scripts/verify_paypal_live.py` is the first step that would change this row |
 | A live Gemini call | **NOT RUN** — without a key the app uses its deterministic templates; the wrapper's fallback path is what the demo shows |
-| The explainer video — `artifacts/video/merchantshield-ai-explainer.mp4`, 2:55, built from real screenshots of this build | **BUILT HERE** — frames captured from the running app in Chromium, narration synthesised, transcript in `artifacts/video/video-manifest.json`. `artifacts/` is gitignored, so the MP4 is uploaded to YouTube and linked from `DEVPOST_TEXT.md` |
+| The explainer video — `artifacts/video/merchantshield-ai-explainer.mp4`, 2:55, 1920×1080 | **BUILT HERE and committed** — app frames captured from the running build in Chromium, narration synthesised, transcript and per-shot timings in `artifacts/video/video-manifest.json`. **NOT YET ON YOUTUBE** — see `DEVPOST_TEXT.md` |
 
 ## Architecture
 
@@ -347,9 +347,11 @@ cd ..
 .\.venv\Scripts\python.exe scripts\build_video.py --frames artifacts\video\frames --audio artifacts\video\audio --out artifacts\video\merchantshield-ai-explainer.mp4
 ```
 
-`artifacts/` is gitignored, so the MP4 lives on YouTube:
-[PLACEHOLDER: YouTube URL]. `DEMO_SCRIPT.md` has the transcript, the per-shot
-timings and what the video claims and does not claim.
+The MP4 (26 MB) and its manifest are committed, so the video travels with the
+repository — `.gitignore` excludes the rest of `artifacts/` but not these two
+files. `DEMO_SCRIPT.md` has the transcript, the per-shot timings, and what the
+video claims and does not claim. YouTube upload:
+[PLACEHOLDER: YouTube URL].
 
 ## Licence
 

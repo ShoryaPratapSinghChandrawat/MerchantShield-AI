@@ -1,0 +1,272 @@
+{
+  "output": "artifacts/video/merchantshield-ai-explainer.mp4",
+  "narration_words": 430,
+  "narration_transcript": [
+    {
+      "scene": 1,
+      "title": "The problem",
+      "audio": "s01.mp3",
+      "text": "A PayPal dispute is decided on evidence: a tracking number, a delivery confirmation, a message thread. By day forty-one, the tracking number was never attached to the PayPal order, and the buyer is already saying chargeback. Merchants lose these cases on paperwork they no longer have."
+    },
+    {
+      "scene": 2,
+      "title": "What it is",
+      "audio": "s02.mp3",
+      "text": "MerchantShield AI scores every order, proposes the action that saves the evidence, and executes only after a human approves. Every record carries one of three labels: a real Sandbox response, generated locally, or a mock standing in for PayPal. There is no fourth label."
+    },
+    {
+      "scene": 3,
+      "title": "Scoring an order",
+      "audio": "s03.mp3",
+      "text": "Twenty-five hand-written rules score each order from zero to one, and every point is attributed with a direction. No tracking costs twenty points. You can argue with a rule; you cannot argue with a number that appears from nowhere."
+    },
+    {
+      "scene": 4,
+      "title": "Estimate and evidence",
+      "audio": "s04.mp3",
+      "text": "Beside it, a logistic-regression prototype, clearly labelled estimate, trained on synthetic data, with its metrics and two baselines on the Methodology page. Underneath, the seven documents this kind of case needs, which ones you hold, and what to do about each gap."
+    },
+    {
+      "scene": 5,
+      "title": "Acting on it, safely",
+      "audio": "s05.mp3",
+      "text": "Ask the planner, and it proposes actions: attach this tracking number, message the buyer, flag the order. Everything arrives pending. The agent has no write access. Approve, then execute. The claim is a single conditional update, so two clicks cannot create two tracking numbers."
+    },
+    {
+      "scene": 6,
+      "title": "Once, and honestly unknown",
+      "audio": "s06.mp3",
+      "text": "A test fires eight concurrent executes and asserts exactly one claim, one external call and one audit row. And a timeout is not a failure. It is an unknown, and the app refuses a blind retry, because that is how duplicates happen."
+    },
+    {
+      "scene": 7,
+      "title": "The dispute",
+      "audio": "s07.mp3",
+      "text": "When the case does open, the packet is already assembled. The draft is a deterministic template without a key; with a Gemini key it is a model draft that must pass a hallucination guard. Every save is a new version. Submission is labelled simulated: no case is filed with PayPal."
+    },
+    {
+      "scene": 8,
+      "title": "Why you can trust it",
+      "audio": "s08.mp3",
+      "text": "Every state change is in an append-only audit log, with an actor and a source. The Methodology page prints the model's real numbers next to two baselines, and states what is not built: no production PayPal, no dispute filing, no carrier API, no training on PayPal data."
+    },
+    {
+      "scene": 9,
+      "title": "What it changes",
+      "audio": "s09.mp3",
+      "text": "For a small merchant, that is the difference between arguing a case and losing it by default. Evidence collected on day one is worth more than any percentage a dashboard could invent. And when the app does not know something, it says so."
+    },
+    {
+      "scene": 10,
+      "title": "Where it stands",
+      "audio": "s10.mp3",
+      "text": "Two hundred and fifteen backend tests, thirty-two browser tests and sixteen mutation checks run from one command. If a guarantee is removed, a test fails. PayPal Sandbox only. Nothing here moves real money."
+    }
+  ],
+  "duration_seconds": 175.13,
+  "duration_mmss": "2:55",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "shots": [
+    {
+      "scene": 1,
+      "scene_title": "The problem",
+      "shot": 1,
+      "source_frame": "__title__",
+      "caption": "A dispute is decided on evidence. Evidence decays.",
+      "start": 0.0,
+      "duration": 9.22
+    },
+    {
+      "scene": 1,
+      "scene_title": "The problem",
+      "shot": 2,
+      "source_frame": "03-order-facts.png",
+      "caption": "MS-2001 \u00b7 41 days old \u00b7 no tracking on file",
+      "start": 9.22,
+      "duration": 9.22
+    },
+    {
+      "scene": 2,
+      "scene_title": "What it is",
+      "shot": 1,
+      "source_frame": "01-overview.png",
+      "caption": "Overview \u00b7 demo on \u00b7 paypal mock \u00b7 llm none",
+      "start": 18.44,
+      "duration": 9.62
+    },
+    {
+      "scene": 2,
+      "scene_title": "What it is",
+      "shot": 2,
+      "source_frame": "07-planner-proposals.png",
+      "caption": "Proposals arrive PENDING \u00b7 the agent cannot approve",
+      "start": 28.06,
+      "duration": 9.62
+    },
+    {
+      "scene": 3,
+      "scene_title": "Scoring an order",
+      "shot": 1,
+      "source_frame": "02-orders.png",
+      "caption": "Orders, sorted by rule score",
+      "start": 37.68,
+      "duration": 8.26
+    },
+    {
+      "scene": 3,
+      "scene_title": "Scoring an order",
+      "shot": 2,
+      "source_frame": "04-risk-reasons.png",
+      "caption": "Every point attributed, with a direction",
+      "start": 45.94,
+      "duration": 8.26
+    },
+    {
+      "scene": 4,
+      "scene_title": "Estimate and evidence",
+      "shot": 1,
+      "source_frame": "05-model-estimate.png",
+      "caption": "ESTIMATE \u00b7 trained on synthetic data",
+      "start": 54.2,
+      "duration": 6.21
+    },
+    {
+      "scene": 4,
+      "scene_title": "Estimate and evidence",
+      "shot": 2,
+      "source_frame": "06-evidence-checklist.png",
+      "caption": "Seven documents \u00b7 present or missing",
+      "start": 60.41,
+      "duration": 6.21
+    },
+    {
+      "scene": 4,
+      "scene_title": "Estimate and evidence",
+      "shot": 3,
+      "source_frame": "14-methodology.png",
+      "caption": "Metrics and both baselines, on the Methodology page",
+      "start": 66.63,
+      "duration": 6.21
+    },
+    {
+      "scene": 5,
+      "scene_title": "Acting on it, safely",
+      "shot": 1,
+      "source_frame": "07-planner-proposals.png",
+      "caption": "PENDING \u2192 APPROVED",
+      "start": 72.84,
+      "duration": 9.58
+    },
+    {
+      "scene": 5,
+      "scene_title": "Acting on it, safely",
+      "shot": 2,
+      "source_frame": "08-proposal-approved.png",
+      "caption": "Approve, then execute",
+      "start": 82.42,
+      "duration": 9.58
+    },
+    {
+      "scene": 6,
+      "scene_title": "Once, and honestly unknown",
+      "shot": 1,
+      "source_frame": "09-proposal-executed.png",
+      "caption": "EXECUTED \u00b7 handled locally \u00b7 SIMULATED",
+      "start": 92.0,
+      "duration": 8.22
+    },
+    {
+      "scene": 6,
+      "scene_title": "Once, and honestly unknown",
+      "shot": 2,
+      "source_frame": "13-audit.png",
+      "caption": "One claim \u00b7 one attempt \u00b7 one audit row",
+      "start": 100.22,
+      "duration": 8.22
+    },
+    {
+      "scene": 7,
+      "scene_title": "The dispute",
+      "shot": 1,
+      "source_frame": "12-dispute-packet.png",
+      "caption": "Evidence packet, score and timeline",
+      "start": 108.44,
+      "duration": 9.16
+    },
+    {
+      "scene": 7,
+      "scene_title": "The dispute",
+      "shot": 2,
+      "source_frame": "12-dispute-packet.png",
+      "caption": "Submission is SIMULATED and labelled",
+      "start": 117.6,
+      "duration": 9.16
+    },
+    {
+      "scene": 8,
+      "scene_title": "Why you can trust it",
+      "shot": 1,
+      "source_frame": "13-audit.png",
+      "caption": "Append-only audit log \u00b7 actor and source on every row",
+      "start": 126.76,
+      "duration": 6.15
+    },
+    {
+      "scene": 8,
+      "scene_title": "Why you can trust it",
+      "shot": 2,
+      "source_frame": "15-methodology-more.png",
+      "caption": "Source labels and the rules the code holds itself to",
+      "start": 132.91,
+      "duration": 6.15
+    },
+    {
+      "scene": 8,
+      "scene_title": "Why you can trust it",
+      "shot": 3,
+      "source_frame": "16-methodology-limits.png",
+      "caption": "What is not built",
+      "start": 139.05,
+      "duration": 6.15
+    },
+    {
+      "scene": 9,
+      "scene_title": "What it changes",
+      "shot": 1,
+      "source_frame": "11-walkthrough-story.png",
+      "caption": "The whole story, nine stages, each labelled",
+      "start": 145.2,
+      "duration": 7.38
+    },
+    {
+      "scene": 9,
+      "scene_title": "What it changes",
+      "shot": 2,
+      "source_frame": "16-methodology-limits.png",
+      "caption": "When the app does not know, it says so",
+      "start": 152.58,
+      "duration": 7.38
+    },
+    {
+      "scene": 10,
+      "scene_title": "Where it stands",
+      "shot": 1,
+      "source_frame": "02-orders.png",
+      "caption": "215 backend tests \u00b7 32 browser tests \u00b7 16 mutation checks",
+      "start": 159.96,
+      "duration": 7.6
+    },
+    {
+      "scene": 10,
+      "scene_title": "Where it stands",
+      "shot": 2,
+      "source_frame": "__outro__",
+      "caption": "PayPal Sandbox only. Nothing here moves real money.",
+      "start": 167.56,
+      "duration": 7.6
+    }
+  ],
+  "note": "App frames are real screenshots of this build (frontend/capture/capture.spec.ts). Narration is synthesised text, and this transcript is the text that was spoken. Title and closing cards are drawn text, not app footage."
+}

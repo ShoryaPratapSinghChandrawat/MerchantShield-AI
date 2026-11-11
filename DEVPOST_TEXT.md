@@ -206,8 +206,9 @@ Hosted demo: [PLACEHOLDER: hosted URL, if any]
 
 [PLACEHOLDER: YouTube URL]
 
-A 2:55 explainer is built and its full transcript, shot list and per-shot
-timings are in `DEMO_SCRIPT.md`; the file itself is produced by
-`scripts/build_video.py` from real screenshots of this build. It is not committed
-(the `artifacts/` directory is gitignored) - upload it to YouTube and paste the
-public URL above before submitting.
+A 2:55 explainer is built and committed at
+`artifacts/video/merchantshield-ai-explainer.mp4`; its full transcript, shot list
+and per-shot timings are in `DEMO_SCRIPT.md`. It is produced by
+`scripts/build_video.py` from real screenshots of this build (no redrawn UI, and
+no film of a PayPal Sandbox transaction, because none happened). Upload it to
+YouTube and paste the public URL above before submitting.
