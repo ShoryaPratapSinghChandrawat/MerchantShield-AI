@@ -1,0 +1,53 @@
+# --- secrets -----------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# --- python ------------------------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# --- databases ---------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+
+# --- node / frontend ---------------------------------------------------
+node_modules/
+dist/
+.vite/
+playwright-report/
+test-results/
+
+# --- generated evidence, never packaged --------------------------------
+# Evidence directory: kept out of Git except the mutation reports, which are
+# small text files a reviewer can actually check.
+artifacts/*
+!artifacts/*/
+artifacts/*/*
+!artifacts/*/MUTATION_REPORT.md
+
+# --- packaging ---------------------------------------------------------
+*.zip
+*.patch
+*.diff
+
+# --- editors / OS ------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# --- generated ML artefacts (re-trained at startup if absent) --------------
+backend/ml/model/
+backend/ml/synthetic_orders.csv
