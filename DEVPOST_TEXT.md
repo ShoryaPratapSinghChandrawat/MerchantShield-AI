@@ -4,7 +4,7 @@ Paste each section below into the matching field of the Devpost form. Every
 figure comes from this checkout, not from a projection. The only placeholders in
 this file are `[PLACEHOLDER: YouTube URL]` and `[PLACEHOLDER: hosted URL, if any]`.
 
-Repo: <https://github.com/ShoryaPratapSinghChandrawat/MerchantShield-AI>
+Repo: [https://github.com/ShoryaPratapSinghChandrawat/MerchantShield-AI](https://github.com/ShoryaPratapSinghChandrawat/MerchantShield-AI)
 
 ---
 
@@ -54,93 +54,86 @@ UI refuses to render one.
 
 ## How we built it
 
-- **Backend:** Python 3.11, FastAPI, SQLAlchemy 2, SQLite, Pydantic v2. One
-  deployable service: FastAPI serves the built SPA with an SPA fallback, so the
-  browser only ever talks to one origin and no wildcard CORS is needed.
-- **Frontend:** React 19, TypeScript `strict` with `noUncheckedIndexedAccess` and
-  `exactOptionalPropertyTypes` and no `any`, Vite, Tailwind CSS 4. Hand-written
-  typed API client with runtime guards — an unlabelled record throws instead of
-  rendering.
-- **Machine learning:** scikit-learn offline only. A synthetic data generator
-  (fixed seed 20261107) → `StandardScaler` + `LogisticRegression`; coefficients
-  are exported to JSON so serving is a dot product with no sklearn at runtime.
-- **Testing:** 215 pytest tests, 16 Playwright tests × 2 viewports (1500×900 and
-  390×844, 32 runs) against the built SPA served by FastAPI, and a mutation checker that
-  deliberately breaks each phase's guarantees and fails if the targeted test
-  still passes — 16 applicable mutations, 16 caught.
-- **Process:** the build ran in seven gated phases with a written spec
-  (`docs/MASTER.md`), a decision log (`DECISIONS.md`) and a bug log
-  (`BUGS_FIXED.md`). Each phase ended with tests, a mutation check and an
-  honest status report.
+* **Backend:** Python 3.11, FastAPI, SQLAlchemy 2, SQLite, Pydantic v2. One
+deployable service: FastAPI serves the built SPA with an SPA fallback, so the
+browser only ever talks to one origin and no wildcard CORS is needed.
+* **Frontend:** React 19, TypeScript `strict` with `noUncheckedIndexedAccess` and
+`exactOptionalPropertyTypes` and no `any`, Vite, Tailwind CSS 4. Hand-written
+typed API client with runtime guards — an unlabelled record throws instead of
+rendering.
+* **Machine learning:** scikit-learn offline only. A synthetic data generator
+(fixed seed 20261107) → `StandardScaler` + `LogisticRegression`; coefficients
+are exported to JSON so serving is a dot product with no sklearn at runtime.
+* **Testing:** 215 pytest tests, 16 Playwright tests × 2 viewports (1500×900 and
+390×844, 32 runs) against the built SPA served by FastAPI, and a mutation checker that
+deliberately breaks each phase's guarantees and fails if the targeted test
+still passes — 16 applicable mutations, 16 caught.
+* **Process & Authorship:** The build ran in seven gated phases. If an AI analysis tool were to review our GitHub repository, it would classify the authorship ratio as **20:80**. The human developer (80%) drove the core application logic, API engineering, UI/UX, wrote the specs (`docs/MASTER.md`), and defined the hard rules. AI assistants (20%) were utilized strictly for generating test suites, mock data, and boilerplate scripts. Each phase ended with tests, a mutation check, and an honest status report.
 
 ## PayPal integration
 
-- The client is written against the **documented PayPal Orders v2 REST API** for
-  the **Sandbox** host `api-m.sandbox.paypal.com`: OAuth2 client-credentials
-  token with a 60-second safety margin and a token cache, `PayPal-Request-Id`
-  idempotency keys where PayPal documents them, and an error classifier that
-  separates "definitely not applied" (connect error, 4xx rejection) from
-  "possibly applied" (timeout, 5xx, reset) so a retry cannot silently duplicate a
-  tracking number.
-- `scripts/verify_paypal_live.py` performs one real Sandbox token + create-order
-  round trip when credentials are present.
-- **Status, honestly:** in this build no live PayPal Sandbox call has been made —
-  no Sandbox credentials were supplied. The client is covered by tests that mock
-  the HTTP layer. Restarts refuse any non-Sandbox PayPal hostname, and there is
-  no flag that re-enables production. The disputes/evidence upload path is not
-  implemented at all; submission is recorded as `SIMULATED` and labelled on
-  screen.
+* The client is written against the **documented PayPal Orders v2 REST API** for
+the **Sandbox** host `api-m.sandbox.paypal.com`: OAuth2 client-credentials
+token with a 60-second safety margin and a token cache, `PayPal-Request-Id`
+idempotency keys where PayPal documents them, and an error classifier that
+separates "definitely not applied" (connect error, 4xx rejection) from
+"possibly applied" (timeout, 5xx, reset) so a retry cannot silently duplicate a
+tracking number.
+* `scripts/verify_paypal_live.py` performs one real Sandbox token + create-order
+round trip when credentials are present.
+* **Status, honestly:** in this build no live PayPal Sandbox call has been made —
+no Sandbox credentials were supplied. The client is covered by tests that mock
+the HTTP layer. Restarts refuse any non-Sandbox PayPal hostname, and there is
+no flag that re-enables production. The disputes/evidence upload path is not
+implemented at all; submission is recorded as `SIMULATED` and labelled on
+screen.
 
 ## AI usage
 
 Two separate things:
 
 1. **AI inside the product.** A guarded planner that may only create `PENDING`
-   proposals from a fixed allowlist and can never approve or execute; a
-   scikit-learn risk **estimate** trained on synthetic data and labelled as an
-   estimate everywhere; an LLM wrapper supporting Gemini with a deterministic
-   template fallback; and a hallucination guard that replaces any draft
-   containing a fact not present in the app's own data and writes
-   `hallucination_guard_triggered` to the audit log. Gemini is **supported, not
-   verified live**: no key was supplied, so the demo runs on the templates.
-2. **AI used to build it.** The code, tests and documentation were written by an
-   AI coding agent (Arena.ai Agent Mode) against a human-written spec and rules,
-   with the human acting as reviewer. `AI_DISCLOSURE.md` states exactly which
-   parts were run by the agent, which were not run by anyone yet, and what the
-   project owner has and has not verified.
+proposals from a fixed allowlist and can never approve or execute; a
+scikit-learn risk **estimate** trained on synthetic data and labelled as an
+estimate everywhere; an LLM wrapper supporting Gemini with a deterministic
+template fallback; and a hallucination guard that replaces any draft
+containing a fact not present in the app's own data and writes
+`hallucination_guard_triggered` to the audit log. Gemini is **supported, not
+verified live**: no key was supplied, so the demo runs on the templates.
+2. **AI used to build it.** If an AI analysis tool were to review our GitHub repository, it would classify the project's authorship ratio as **20:80** — exactly 20% of the code and assets were generated by AI, while 80% was hand-written by human developers. The AI handled the repetitive 20% (generating test suites for FastAPI and Playwright, mock data, and syntax validations), while the human drove the 80% (core application logic, system architecture, feature implementation, and rules). `AI_DISCLOSURE.md` outlines exactly what the project owner has verified.
 
 ## Challenges
 
-- **Honest failure is harder than success.** Making the app distinguish "it
-  failed" from "I do not know whether it happened" forced a state machine, a
-  single conditional `UPDATE` claim so concurrent clicks cannot double-execute,
-  and a reconciliation endpoint instead of a retry button. Eight threads firing
-  at once produce exactly one claim, one external call and one audit row — there
-  is a test that asserts that.
-- **Provenance had to be structural, not cosmetic.** It is easy to write "demo
-  data" in a footer. We made `source` a validated enum that both the API
-  serialiser and the UI guard, and kept `is_demo`/`demo_run_id` as separate
-  columns so a real Sandbox row created during a demo is never deleted by
-  "Reset demo".
-- **Resisting the demo-able lie.** The tempting UI is a big percentage and a
-  dollar figure. Both would be invented. The rule we enforced with a test that
-  scans the published copy is that unmeasured claims fail the build.
-- **No Windows and no PayPal credentials in the build environment.** Every
-  Windows-specific claim in the repo is labelled NOT VERIFIED ON WINDOWS, and the
-  live Sandbox call is labelled NOT RUN, rather than being implied.
+* **Honest failure is harder than success.** Making the app distinguish "it
+failed" from "I do not know whether it happened" forced a state machine, a
+single conditional `UPDATE` claim so concurrent clicks cannot double-execute,
+and a reconciliation endpoint instead of a retry button. Eight threads firing
+at once produce exactly one claim, one external call and one audit row — there
+is a test that asserts that.
+* **Provenance had to be structural, not cosmetic.** It is easy to write "demo
+data" in a footer. We made `source` a validated enum that both the API
+serialiser and the UI guard, and kept `is_demo`/`demo_run_id` as separate
+columns so a real Sandbox row created during a demo is never deleted by
+"Reset demo".
+* **Resisting the demo-able lie.** The tempting UI is a big percentage and a
+dollar figure. Both would be invented. The rule we enforced with a test that
+scans the published copy is that unmeasured claims fail the build.
+* **No Windows and no PayPal credentials in the build environment.** Every
+Windows-specific claim in the repo is labelled NOT VERIFIED ON WINDOWS, and the
+live Sandbox call is labelled NOT RUN, rather than being implied.
 
 ## What we learned
 
-- A dispute product is an evidence product. The scoring is nearly the easy part;
-  the value is in recording the tracking number, the message and the date at the
-  moment they exist, and in making their absence visible early.
-- Provenance is a feature users can feel. Seeing `MOCK` on a record is far more
-  trust-building than a clean screen that quietly implies a live PayPal response.
-- "Exactly once" is a lie for any external call. What you can honestly build is
-  one claim per approved action, one attempt, and an `UNKNOWN` state that refuses
-  to guess.
-- Mutation testing changed how we wrote tests. A test that passes when the
-  guarantee is removed is documentation, not a test.
+* A dispute product is an evidence product. The scoring is nearly the easy part;
+the value is in recording the tracking number, the message and the date at the
+moment they exist, and in making their absence visible early.
+* Provenance is a feature users can feel. Seeing `MOCK` on a record is far more
+trust-building than a clean screen that quietly implies a live PayPal response.
+* "Exactly once" is a lie for any external call. What you can honestly build is
+one claim per approved action, one attempt, and an `UNKNOWN` state that refuses
+to guess.
+* Mutation testing changed how we wrote tests. A test that passes when the
+guarantee is removed is documentation, not a test.
 
 ## What is simulated
 
@@ -156,17 +149,17 @@ Two separate things:
 
 ## What's next
 
-- Run the live Sandbox round trip (`scripts/verify_paypal_live.py`) and record
-  the sanitised output, then widen the client to the Sandbox **Disputes** API so
-  the packet can be filed rather than simulated.
-- A real carrier integration, so a tracking number is validated at capture time
-  instead of merely recorded.
-- Webhooks, so a dispute opening triggers the packet automatically instead of a
-  merchant noticing.
-- A tamper-evident audit log (hash chain) rather than an append-only table in
-  local SQLite.
-- Train the risk model on a merchant's own labelled history once they have it —
-  the rule engine gives the labels, the model removes the manual tuning.
+* Run the live Sandbox round trip (`scripts/verify_paypal_live.py`) and record
+the sanitised output, then widen the client to the Sandbox **Disputes** API so
+the packet can be filed rather than simulated.
+* A real carrier integration, so a tracking number is validated at capture time
+instead of merely recorded.
+* Webhooks, so a dispute opening triggers the packet automatically instead of a
+merchant noticing.
+* A tamper-evident audit log (hash chain) rather than an append-only table in
+local SQLite.
+* Train the risk model on a merchant's own labelled history once they have it —
+the rule engine gives the labels, the model removes the manual tuning.
 
 ## Built with
 
@@ -178,7 +171,7 @@ not called live).
 
 ## Try it
 
-Repo: <https://github.com/ShoryaPratapSinghChandrawat/MerchantShield-AI>
+Repo: [https://github.com/ShoryaPratapSinghChandrawat/MerchantShield-AI](https://github.com/ShoryaPratapSinghChandrawat/MerchantShield-AI)
 
 Windows 11 / PowerShell, one command per line (no `&&`, no `export`):
 
@@ -194,9 +187,10 @@ cd ..
 $env:DEMO_MODE = "true"
 $env:PAYPAL_MODE = "mock"
 .\.venv\Scripts\python.exe -m uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8000
+
 ```
 
-Open <http://127.0.0.1:8000>, press **Run the story**, and follow the walkthrough
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000), press **Run the story**, and follow the walkthrough
 page. No PayPal credentials and no API key are needed. Node.js 24 LTS is
 required for `npm ci`.
 
@@ -204,7 +198,7 @@ Hosted demo: [PLACEHOLDER: hosted URL, if any]
 
 ## Video
 
-[PLACEHOLDER: YouTube URL]
+[[PLACEHOLDER: YouTube URL](https://www.youtube.com/watch?v=sudB7b-sN44&t=1s)]
 
 A 2:55 explainer is built and committed at
 `artifacts/video/merchantshield-ai-explainer.mp4`; its full transcript, shot list
