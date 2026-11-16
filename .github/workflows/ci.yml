@@ -42,6 +42,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Read current project phase
+        id: phase
+        shell: bash
+        run: echo "value=$(tr -d ' \n\r' < PHASE)" >> "$GITHUB_OUTPUT"
+
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -81,12 +86,12 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: phase-0-browser-evidence
+          name: phase-${{ steps.phase.outputs.value }}-browser-evidence
           path: |
-            artifacts/phase-0/ci-linux/**/*.png
-            artifacts/phase-0/ci-linux/**/*.log
-            artifacts/phase-0/ci-linux/playwright-report/**
-            artifacts/phase-0/ci-linux/playwright-results.json
+            artifacts/phase-${{ steps.phase.outputs.value }}/ci-linux/**/*.png
+            artifacts/phase-${{ steps.phase.outputs.value }}/ci-linux/**/*.log
+            artifacts/phase-${{ steps.phase.outputs.value }}/ci-linux/playwright-report/**
+            artifacts/phase-${{ steps.phase.outputs.value }}/ci-linux/playwright-results.json
           if-no-files-found: error
           retention-days: 30
 
