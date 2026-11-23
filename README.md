@@ -187,9 +187,14 @@ Linux sandbox — and re-measured in a clean copy of the repository with no
 `.venv`, `node_modules`, `dist`, database or `artifacts/`, following only the
 "Run it in 5 minutes" steps below.
 
+**Post-baseline change:** two planner shipment-data safety regression tests
+were added on 2026-11-24 in `backend/tests/test_agent_safety.py`. They have not
+yet been run in a verified environment. The results below remain the historical
+2026-11-11 baseline and do not claim those two tests passed.
+
 | What | Status |
 | --- | --- |
-| Backend suite — **215 tests** (config guards, UTC timestamps, seeding, demo reset, orders, risk rules, evidence score, the full action protocol, PayPal client, LLM wrapper and hallucination guard, ML, disputes, storefront, API contract, honesty scan, mutation-tooling self-test) | **RAN HERE** — `215 passed` |
+| Backend suite — **215-test recorded baseline** (config guards, UTC timestamps, seeding, demo reset, orders, risk rules, evidence score, the full action protocol, PayPal client, LLM wrapper and hallucination guard, ML, disputes, storefront, API contract, honesty scan, mutation-tooling self-test) | **RAN HERE on 2026-11-11** — `215 passed`; 2 new safety tests added 2026-11-24 are pending execution |
 | Frontend `tsc --noEmit` | **RAN HERE** — clean, `strict` with `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes` |
 | Frontend `vite build` | **RAN HERE** — clean |
 | Mutation check — **16 applicable mutations** across phases 0, 1, 2, 5 and 6 (a mutation that no test notices is a hard failure) | **RAN HERE** — 16/16 caught; reports in `artifacts/phase-*/MUTATION_REPORT.md` |
@@ -217,7 +222,7 @@ backend/
   app/db/           base, sqlite_url, seed (15 story orders + demo reset)
   ml/               generate_data.py (synthetic orders), train.py (sklearn, offline),
                     model/ (gitignored artefact, retrained on first boot if absent)
-  tests/            215 tests across 21 files
+  tests/            215-test recorded baseline across 21 files; 2 planner safety tests added 2026-11-24, pending execution
 frontend/
   src/pages/        Dashboard (labelled "Overview"), Orders, Store, Disputes, Audit,
                     Walkthrough, About (labelled "Methodology")
