@@ -106,7 +106,10 @@ update re-ran the suite.
 | Live Gemini | Not run |
 | Windows execution | Not verified on a Windows machine |
 
-The detailed evidence and commands are in [README.md](README.md).
+The two planner shipment-data safety regression tests were added after the
+2026-11-11 baseline and have not yet been run in a verified environment. No
+pass result is claimed for them. The detailed evidence and commands are in
+[README.md](README.md).
 
 ## Run the mock demo
 
