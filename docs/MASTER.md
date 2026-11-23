@@ -2,7 +2,7 @@
 This file is the single source of truth. Re-read it at the start of every sprint/phase. If a prompt conflicts with it, THIS FILE WINS (section 10 overrides sections 6 and 9 on schedule and gating); report the conflict. Never claim something works without evidence from the current checkout.
 
 ## 1. Product and competition
-Product: MerchantShield AI. Pitch: "MerchantShield AI stops PayPal disputes before they happen and helps small merchants answer the ones that do."
+Product: MerchantShield AI. Current, evidence-aligned pitch: "Helps small merchants identify missing order evidence early and prepare PayPal dispute-response material." This describes the workflow goal; the project has not measured dispute reduction or merchant outcomes.
 Competition: PayPal AI Hackathon on Devpost. Judging dimensions: Technological Implementation, Design, Potential Impact, Innovation/Idea, Presentation. Deliverables: a working demo (hosted URL or complete run instructions), a public repo with a visible open-source licence (MIT), a text description, tools used, and a public YouTube video under 3 minutes showing the app working end to end. Deadline: Nov 12, 2026 12:00 PT (= Nov 13 01:30 IST). Eligibility, team size and sponsor-prize rules must be re-checked on the official Devpost Rules tab before submitting.
 PayPal SANDBOX only, no real money, no production endpoints. PayPal must be central to the product and AI must do meaningful work.
 
@@ -32,7 +32,7 @@ Disputes (evidence packet, drafted response, approval, submission) are Phase 6. 
 - Frontend: React + Vite + TypeScript (strict, no any) + Tailwind + AG Grid Community. Use the AG Grid Theming API (theme prop, e.g. themeQuartz); do NOT import legacy ag-grid CSS theme files; register modules with ModuleRegistry; check the installed version's real exports before writing code.
 - ONE deployable service: FastAPI serves frontend/dist at "/" with SPA fallback; the API is under /api; Vite proxies /api in dev. No wildcard CORS with credentials.
 - Root files: LICENSE (MIT), README.md, DECISIONS.md, BUGS_FIXED.md, .gitignore, .env.example, PHASE, .nvmrc, scripts/. Never commit secrets, .env, .venv, node_modules, dist, *.db, caches or generated runtime files.
-- Environment variables: DEMO_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PAYPAL_BASE_URL (sandbox default), PAYPAL_MODE=auto|live|mock, LLM_PROVIDER=gemini|none (interface extensible), LLM_API_KEY, LLM_MODEL, DATABASE_URL, APP_BASE_URL, PORT.
+- Environment variables: DEMO_MODE, PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PAYPAL_BASE_URL (sandbox default), PAYPAL_MODE=auto|sandbox|mock, LLM_PROVIDER=gemini|none (interface extensible), LLM_API_KEY, LLM_MODEL, DATABASE_URL, APP_BASE_URL, PORT.
 - Logs use the logging module; secrets are masked; PayPal secrets and LLM keys never reach the frontend or logs.
 - Tests use a temp database, never the dev DB, never the network (mock every external request), and set DEMO_MODE explicitly.
 4.2 Timestamps
