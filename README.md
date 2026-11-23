@@ -1,13 +1,12 @@
 # MerchantShield AI
 
-**Stops PayPal disputes before they happen, and helps small merchants answer
-the ones that do.**
+**Helps small merchants spot missing order evidence early and prepare more complete PayPal dispute responses.**
 
 Sandbox-first, provenance-labelled, and deliberately unglamorous about what it
 does not know. Every record on screen says where its data came from. Nothing
 here moves real money.
 
-Built for the **PayPal AI Hackathon** (deadline 12 November 2026, 12:00 PT).
+Built as a submission to the **PayPal AI Hackathon 2026** (submission period closed 12 November 2026).
 
 ### Quick start for judges (Windows 11, PowerShell)
 
@@ -36,6 +35,12 @@ or `SIMULATED`, and the UI says so on screen.
 
 ---
 
+## For reviewers
+
+Start with [the reviewer guide](REVIEWER_GUIDE.md) for a short walkthrough,
+architecture map, evidence summary, and a clear separation between implemented,
+simulated, and not-yet-verified behavior.
+
 ## The problem
 
 A small merchant loses a PayPal dispute for one reason far more often than any
@@ -60,16 +65,17 @@ days.
 2. **Proposes the next actions** an experienced operator would take: attach the
    tracking number, message the buyer, flag the order for review. The planner has
    no write access: proposals arrive `PENDING` and wait for a human.
-3. **Executes only with approval**, exactly once, through a documented protocol
-   that distinguishes "it failed" from "I do not know whether it happened".
+3. **Executes permitted actions only after human approval**, through a documented
+   protocol that distinguishes "it failed" from "I do not know whether it happened".
 4. **Builds an evidence packet** for a dispute: the seven documents that decide
    these cases, which ones you hold, which are missing, and what to do about
    each one.
-5. **Drafts the response** — a deterministic template, or a Gemini draft behind a
-   hallucination guard — and keeps every version, recording whether it was an AI
-   draft, a template, or the merchant's own edit.
-6. **Records everything** in an append-only audit log: who did what, when, and
-   which source the data came from.
+5. **Drafts the response** — a deterministic template by default, or an optional
+   Gemini draft behind a factual guard — and keeps every version, recording
+   whether it was a model draft, a template, or the merchant's own edit.
+6. **Records app activity** in an audit log: who did what, when, and which source
+   the data came from. The local SQLite log is append-only by application
+   convention, not tamper-evident storage.
 
 ## The honesty rules, enforced by code
 
@@ -190,8 +196,8 @@ Linux sandbox — and re-measured in a clean copy of the repository with no
 | Browser suite — **16 tests × 2 viewports** (1500×900 and 390×844) against the built SPA served by FastAPI, with any console error failing the test | **RAN HERE** — 32/32 passed, using a substitute Chromium 153 via `MS_CHROMIUM_PATH` because the pinned download host is blocked in this sandbox |
 | GitHub Actions CI (backend tests, frontend build + Playwright with the pinned browser, mutation check) | **RAN IN CI on commit `048cdd4` (Phase 0)** — all three jobs green, and the Playwright job's pinned-Chromium install and artifact-upload steps succeeded (`DECISIONS.md` D-023). **NOT VERIFIED IN CI for the later phases**: the workflow file is unchanged and committed, so check the Actions tab after your next push |
 | Windows 11 / PowerShell | **VERIFIED ON WINDOWS** — every command is written for PowerShell 5.1 and `scripts\windows_check.ps1` exists to check it, but no Windows machine has executed this build |
-| A live PayPal Sandbox call | **RUN** — the client targets the documented Orders v2 Sandbox API and is covered by mocked-HTTP tests; `scripts/verify_paypal_live.py` is the first step that would change this row |
-| A live Gemini call | **RUN** — without a key the app uses its deterministic templates; the wrapper's fallback path is what the demo shows |
+| A live PayPal Sandbox call | **NOT RUN** — the Orders v2 Sandbox client is implemented and covered by mocked-HTTP tests, but this repository has no recorded live Sandbox call. `scripts/verify_paypal_live.py` is the explicit verification step |
+| A live Gemini call | **NOT RUN** — the provider adapter is implemented, but no live Gemini request was made in the recorded build. The demo uses deterministic templates |
 | The explainer video — `artifacts/video/merchantshield-ai-explainer.mp4`, 2:55, 1920×1080 | **BUILT HERE and committed** — app frames captured from the running build in Chromium, narration synthesised, transcript and per-shot timings in `artifacts/video/video-manifest.json`. **ON YOUTUBE** — see `DEVPOST_TEXT.md` |
 
 ## Architecture
@@ -351,7 +357,7 @@ The MP4 (26 MB) and its manifest are committed, so the video travels with the
 repository — `.gitignore` excludes the rest of `artifacts/` but not these two
 files. `DEMO_SCRIPT.md` has the transcript, the per-shot timings, and what the
 video claims and does not claim. YouTube upload:
-[[PLACEHOLDER: YouTube URL](https://www.youtube.com/watch?v=sudB7b-sN44)].
+[Referenced YouTube URL](https://www.youtube.com/watch?v=sudB7b-sN44) (public playback was not independently verified during this repository review).
 
 ## Licence
 
