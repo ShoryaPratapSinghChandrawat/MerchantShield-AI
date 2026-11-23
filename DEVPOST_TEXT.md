@@ -28,7 +28,9 @@ No real-merchant outcome study is included.
    the gaps a merchant may need to address.
 3. **Human-reviewed action proposals.** Suggests adding tracking, recording a
    buyer message in the app, or flagging an order for review. Proposals begin
-   as `PENDING`; the planner cannot approve or execute them.
+   as `PENDING`; the planner cannot approve or execute them. It does not
+   invent tracking details for non-demo orders; the sample tracking value is
+   restricted to labelled mock/simulated walkthrough data.
 4. **Action protocol.** Enforces explicit approval and distinguishes known
    failure from an uncertain result (`UNKNOWN`). It uses a conditional
    database claim to prevent concurrent local executions.
