@@ -24,10 +24,23 @@ logger = logging.getLogger(__name__)
 MAX_STEPS = 6
 
 
-def _shipping_hint(order: Any) -> dict[str, Any]:
+DEMO_TRACKING_NUMBER = "1Z999AA10123456784"
+DEMO_CARRIER = "UPS"
+
+
+def _shipping_hint(order: Any) -> dict[str, str]:
+    """Return only merchant-supplied shipment details; never fill missing facts."""
     return {
-        "tracking_number": getattr(order, "tracking_number", None) or "",
-        "carrier": getattr(order, "carrier", None) or "UPS",
+        "tracking_number": str(getattr(order, "tracking_number", None) or "").strip(),
+        "carrier": str(getattr(order, "carrier", None) or "").strip(),
+    }
+
+
+def _is_mock_demo_order(order: Any) -> bool:
+    """Only synthetic/mock walkthrough orders may use the clearly labelled sample."""
+    return bool(getattr(order, "is_demo", False)) and getattr(order, "source", None) in {
+        "SIMULATED",
+        "MOCK",
     }
 
 
@@ -46,19 +59,37 @@ def plan(
 
     missing = {item.kind for item in assessment.missing_evidence if not item.present}
 
-    # 1. The single highest-value action in the whole product: put tracking on
-    #    the PayPal order so the buyer (and PayPal) can see the shipment.
+    # 1. Add tracking only when the merchant supplied BOTH values. The one
+    #    example value used by the guided story is permitted only for rows that
+    #    are explicitly marked as synthetic/mock demo data.
     if "TRACKING_NUMBER" in missing or "CARRIER" in missing:
         hint = _shipping_hint(order)
-        add(
-            ActionType.ADD_TRACKING,
-            {
-                "tracking_number": hint["tracking_number"] or "1Z999AA10123456784",
-                "carrier": hint["carrier"],
-            },
-            "No tracking is on file, so you cannot currently prove you shipped "
-            "this. Adding it to the PayPal order is the strongest step available.",
-        )
+        if hint["tracking_number"] and hint["carrier"]:
+            add(
+                ActionType.ADD_TRACKING,
+                hint,
+                "Attach the tracking number and carrier already recorded for "
+                "this order so the shipment evidence is available on the order.",
+            )
+        elif _is_mock_demo_order(order):
+            add(
+                ActionType.ADD_TRACKING,
+                {
+                    "tracking_number": DEMO_TRACKING_NUMBER,
+                    "carrier": DEMO_CARRIER,
+                },
+                "DEMO ONLY: this sample tracking value exists only to exercise "
+                "the mock walkthrough. Replace it with a carrier-issued number; "
+                "never use this sample for a real shipment.",
+            )
+        else:
+            add(
+                ActionType.FLAG_FOR_REVIEW,
+                {"reason": "Missing verified tracking number and/or carrier"},
+                "A verified carrier-issued tracking number and carrier are "
+                "missing. The planner will not invent shipment details. Enter "
+                "the actual values on the order before proposing ADD_TRACKING.",
+            )
 
     # 2. Evidence with the buyer, on the record.
     if "BUYER_COMMUNICATION" in missing:
@@ -67,8 +98,8 @@ def plan(
             {
                 "body": (
                     f"Hello {order.buyer_name}, thank you for your order of {order.item_name}. "
-                    "We have your shipment details on file and will share the tracking "
-                    "update here. If anything is wrong, reply and we will fix it."
+                    "We are checking the shipment status for your order. "
+                    "If you have questions, reply here and we will follow up."
                 )
             },
             "No buyer communication is logged. A calm, factual message on file "
