@@ -31,8 +31,9 @@ The implementation includes:
 
 The README records the latest full local verification on 2026-11-11:
 
-- 215 backend tests passed.
+- 215 backend tests passed in that recorded run.
 - 16 Playwright tests across two viewport sizes (32 browser runs) passed.
+- Two planner shipment-data safety regression tests were added on 2026-11-24; their execution result is pending and they are not included in the 215-test baseline.
 - 16/16 applicable mutations were caught.
 - TypeScript type-check and Vite build passed.
 - A clean-copy quick start was recorded as verified in the Linux sandbox.
