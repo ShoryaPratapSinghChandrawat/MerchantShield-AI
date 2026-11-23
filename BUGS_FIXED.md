@@ -715,6 +715,39 @@ dependency on a generated string entirely.
 
 ---
 
+## BUG-0022 - The planner could propose a sample tracking number for a non-demo order
+
+**Found:** 2026-11-24, during a safety review of the PayPal action path.
+
+**Symptom.** When an order was missing tracking, the planner filled the
+`ADD_TRACKING` payload with the hard-coded example
+`1Z999AA10123456784`. The seeded walkthrough is mock/simulated, but the planner
+did not check the order's demo/provenance flags before using that value. A
+non-demo Sandbox order could therefore receive an action proposal containing a
+tracking number that was not supplied by the merchant.
+
+**Why it matters.** A tracking number is a material shipment fact. Even with
+human approval, the application must not fabricate one or present a sample as
+though it describes a real parcel. Carrier defaults are also unsafe: the
+planner must not infer UPS when the actual carrier is unknown.
+
+**Fix.**
+
+- The planner now uses an `ADD_TRACKING` payload only when both the actual
+  tracking number and carrier are present on the order.
+- The example tracking number and UPS carrier are allowed only for records
+  explicitly marked as demo rows with `source=SIMULATED` or `source=MOCK`.
+  The proposal rationale labels this `DEMO ONLY` and says never to use it for
+  a real shipment.
+- For non-demo orders with missing shipment data, the planner proposes a
+  human-review action and instructs the merchant to enter verified details.
+- The default buyer-message text no longer claims shipment details are already
+  on file when the tracking information may be missing.
+
+**Regression coverage added.** `backend/tests/test_agent_safety.py` checks
+that non-demo orders receive no invented tracking payload and that the demo
+example is explicitly labelled. CI status is pending for this change.
+
 ## Not yet reproduced / not yet investigated
 
 Listed so they are not quietly forgotten.
