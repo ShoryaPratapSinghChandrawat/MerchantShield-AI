@@ -30,7 +30,9 @@ PayPal or move money.
    approve or reject it explicitly.
 5. **Execution and audit:** follow the state transition and inspect the stored
    source label and audit record. In mock mode, the result is `MOCK`, not a
-   real PayPal response.
+   real PayPal response. The planner's example tracking value is explicitly
+   limited to synthetic/mock walkthrough rows; it is not proposed for non-demo
+   orders.
 6. **Disputes:** inspect the evidence packet and response draft. The default
    draft is a deterministic template. The submit path is simulated.
 
