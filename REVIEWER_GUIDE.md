@@ -75,7 +75,8 @@ PayPal or move money.
 
 The README's last recorded full local test run is dated 2026-11-11:
 
-- 215 backend tests passed.
+- 215 backend tests passed in the 2026-11-11 recorded run.
+- Two additional planner shipment-data safety tests were added on 2026-11-24; they have not yet been run in a verified environment.
 - 16 Playwright tests × 2 viewport sizes = 32 browser runs passed.
 - 16/16 applicable mutations were caught.
 - TypeScript strict type-check and Vite build passed.
@@ -119,7 +120,7 @@ the repository and states the relevant limitation alongside it.
 
 | Criterion | Evidence a reviewer can inspect | Boundary / remaining weakness |
 | --- | --- | --- |
-| **Technological implementation** | FastAPI + React/TypeScript application; 25-rule engine; synthetic-data logistic-regression estimate; human-approved action state machine; PayPal Orders v2 Sandbox client; 215 backend tests, 32 browser runs and 16/16 mutation checks in the last recorded local run | The recorded build did not make a live PayPal Sandbox call or a live Gemini request; the default walkthrough is mock/template based; PayPal dispute submission is simulated |
+| **Technological implementation** | FastAPI + React/TypeScript application; 25-rule engine; synthetic-data logistic-regression estimate; human-approved action state machine; PayPal Orders v2 Sandbox client; 215-test baseline, 32 browser runs and 16/16 mutation checks in the last recorded local run, plus 2 new safety tests awaiting execution | The recorded build did not make a live PayPal Sandbox call or a live Gemini request; the default walkthrough is mock/template based; PayPal dispute submission is simulated |
 | **Design** | Guided walkthrough, separate Orders / Action Inbox / Audit / Disputes experiences, explicit provenance labels, responsive Playwright coverage | The demonstrated checkout and external results use mock/simulated data; no production merchant usability study is claimed |
 | **Potential impact** | Focuses on the operational gap between an order being shipped and the evidence being available when a dispute occurs; shows evidence present/missing and a response packet | No measured reduction in disputes, chargebacks, losses or merchant workload; no real-merchant outcome study is included |
 | **Innovation / idea** | Connects pre-dispute evidence readiness with post-dispute packet preparation and human-approved actions, rather than presenting only a dispute-response text generator | This is a product-direction distinction, not a claim that no competing product offers similar features; the wider gallery includes adjacent dispute automation projects |
