@@ -198,7 +198,7 @@ Linux sandbox — and re-measured in a clean copy of the repository with no
 | Windows 11 / PowerShell | **VERIFIED ON WINDOWS** — every command is written for PowerShell 5.1 and `scripts\windows_check.ps1` exists to check it, but no Windows machine has executed this build |
 | A live PayPal Sandbox call | **NOT RUN** — the Orders v2 Sandbox client is implemented and covered by mocked-HTTP tests, but this repository has no recorded live Sandbox call. `scripts/verify_paypal_live.py` is the explicit verification step |
 | A live Gemini call | **NOT RUN** — the provider adapter is implemented, but no live Gemini request was made in the recorded build. The demo uses deterministic templates |
-| The explainer video — `artifacts/video/merchantshield-ai-explainer.mp4`, 2:55, 1920×1080 | **BUILT HERE and committed** — app frames captured from the running build in Chromium, narration synthesised, transcript and per-shot timings in `artifacts/video/video-manifest.json`. **ON YOUTUBE** — see `DEVPOST_TEXT.md` |
+| The explainer video — `artifacts/video/merchantshield-ai-explainer.mp4`, 2:55, 1920×1080 | **BUILT HERE and committed** — app frames captured from the running build in Chromium, narration synthesised, transcript and per-shot timings in `artifacts/video/video-manifest.json`. A YouTube URL is referenced in `DEVPOST_TEXT.md`; public playback was not independently verified in this repository review |
 
 ## Architecture
 
