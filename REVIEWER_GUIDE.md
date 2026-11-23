@@ -111,7 +111,25 @@ Dispute submission is simulated, no real money is moved, and the local audit
 table is not tamper-evident storage. The application is a prototype, not a
 production payment or dispute-management system.
 
-## 8. Primary references
+## 8. Mapping to the official judging criteria
+
+The [official rules](https://paypalaihackathon.devpost.com/rules) state that the
+five Stage Two criteria are equally weighted. This map points to evidence in
+the repository and states the relevant limitation alongside it.
+
+| Criterion | Evidence a reviewer can inspect | Boundary / remaining weakness |
+| --- | --- | --- |
+| **Technological implementation** | FastAPI + React/TypeScript application; 25-rule engine; synthetic-data logistic-regression estimate; human-approved action state machine; PayPal Orders v2 Sandbox client; 215 backend tests, 32 browser runs and 16/16 mutation checks in the last recorded local run | The recorded build did not make a live PayPal Sandbox call or a live Gemini request; the default walkthrough is mock/template based; PayPal dispute submission is simulated |
+| **Design** | Guided walkthrough, separate Orders / Action Inbox / Audit / Disputes experiences, explicit provenance labels, responsive Playwright coverage | The demonstrated checkout and external results use mock/simulated data; no production merchant usability study is claimed |
+| **Potential impact** | Focuses on the operational gap between an order being shipped and the evidence being available when a dispute occurs; shows evidence present/missing and a response packet | No measured reduction in disputes, chargebacks, losses or merchant workload; no real-merchant outcome study is included |
+| **Innovation / idea** | Connects pre-dispute evidence readiness with post-dispute packet preparation and human-approved actions, rather than presenting only a dispute-response text generator | This is a product-direction distinction, not a claim that no competing product offers similar features; the wider gallery includes adjacent dispute automation projects |
+| **Presentation** | A 2:55 explainer MP4, transcript and shot manifest are committed in the repository; README provides a reproducible local run path | The recorded video uses mock/simulated app data and contains no live PayPal transaction; public playback of the referenced YouTube URL was not independently verified during this review |
+
+This section is an evidence index, not a self-awarded score. Reviewers should
+use the linked source, test records and limitations above rather than treating
+the project narrative as proof of an unrun integration.
+
+## 9. Primary references
 
 - [README and quick start](README.md)
 - [AI disclosure](AI_DISCLOSURE.md)
